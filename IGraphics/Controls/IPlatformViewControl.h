@@ -66,6 +66,14 @@ public:
   {
     return mPlatformView;
   }
+
+  void Hide(bool hide) override
+  {
+    if (mPlatformView)
+      GetUI()->HidePlatformView(mPlatformView, hide);
+    
+    IControl::Hide(hide);
+  }
   
 private:
   void UpdateChildViewBounds()
