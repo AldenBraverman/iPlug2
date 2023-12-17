@@ -31,15 +31,14 @@ BEGIN_IPLUG_NAMESPACE
  *   interpolate between samples. This is the highest quality resampling mode.
  * 
  * The Lanczos resampler has a configurable filter size (A) that affects the 
- * latency of the resampler. It can also optionally use SIMD instructions to
+ * latency of the resampler. It can also optionally use SIMD instructions
  * when T==float.
  *
  * @tparam T the sampletype float or double
  * @tparam NCHANS the number of channels
  * @tparam A The Lanczos filter size for the LanczosResampler resampler mode
- * A higher value makes the filter closer to an
- * ideal stop-band that rejects high-frequency content (anti-aliasing),
- * but at the expense of higher latency
+ * A higher value makes the filter closer to an ideal stop-band that rejects high-frequency
+ * content (anti-aliasing), but at the expense of higher latency
  */
 template<typename T = double, int NCHANS=2, size_t A=12>
 class RealtimeResampler
@@ -100,9 +99,7 @@ public:
       mInResampler = std::make_unique<LanczosResampler>(mOuterSampleRate, mInnerSampleRate);
       mOutResampler = std::make_unique<LanczosResampler>(mInnerSampleRate, mOuterSampleRate);
       
-      // Warm up the resamplers with enough silence that
-      // the first real buffer can yield the required number
-      // of output samples.
+      // Warm up the resamplers with enough silence that the first real buffer can yield the required number of output samples.
       const auto outSamplesRequired = mOutResampler->GetNumSamplesRequiredFor(1);
       const auto inSamplesRequired = mInResampler->GetNumSamplesRequiredFor(outSamplesRequired);
       mInResampler->PushBlock(mInputPtrs.GetList(), inSamplesRequired);
@@ -175,7 +172,7 @@ public:
   int GetLatency() const { return mLatency; }
 
 private:
-  /** Interpolate the signal acroos the block with a specify resampling ration*/
+  /** Interpolate the signal across the block with a specific resampling ratio */
   static inline int LinearInterpolate(T** inputs, T** outputs, int inputLength, double ratio, int maxOutputLength)
   {
     const auto outputLength =
