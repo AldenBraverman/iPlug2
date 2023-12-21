@@ -24,7 +24,7 @@ IPlugInstrument::IPlugInstrument(const InstanceInfo& info)
   
   mLayoutFunc = [&](IGraphics* pGraphics) {
     pGraphics->AttachCornerResizer(EUIResizerMode::Scale, false);
-    pGraphics->AttachPanelBackground(COLOR_GRAY);
+    pGraphics->AttachPanelBackground(COLOR_WHITE);
     pGraphics->EnableMouseOver(true);
     pGraphics->EnableMultiTouch(true);
     
