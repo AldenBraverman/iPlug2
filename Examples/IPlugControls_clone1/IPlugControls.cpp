@@ -99,7 +99,8 @@ IPlugControls::IPlugControls(const InstanceInfo& info)
       pGraphics->AttachControl(new ITextControl(nextCell().GetFromTop(20.f), label, style.labelText));
     };
     */
-      
+    
+    /*
     pGraphics->AttachControl(new IShaderControl(b, R"(
       uniform float iTime;
       
@@ -108,6 +109,7 @@ IPlugControls::IPlugControls(const InstanceInfo& info)
       }
       )"
     ));
+    */
   
     
 #pragma mark MiscControls -
@@ -225,7 +227,17 @@ IPlugControls::IPlugControls(const InstanceInfo& info)
     // pGraphics->AttachControl(new IVRadioButtonControl(nextCell().GetCentredInside(110.), kParamMode, {"one", "two", "three", "four"}, "IVRadioButtonControl", style, EVShape::Ellipse, EDirection::Vertical, 10.f), kCtrlTagRadioButton, "vcontrols");
     // pGraphics->AttachControl(new IVTabSwitchControl(nextCell().SubRectVertical(3, 0), SplashClickActionFunc, {ICON_FAU_FILTER_LOWPASS, ICON_FAU_FILTER_BANDPASS, ICON_FAU_FILTER_HIGHPASS}, "IVTabSwitchControl", style.WithValueText(fontaudioText), EVShape::EndsRounded), kCtrlTagTabSwitch, "vcontrols");
     // pGraphics->AttachControl(new IVSlideSwitchControl(sameCell().SubRectVertical(3, 1), kParamMode, "IVSlideSwitchControl", style, true), kNoTag, "vcontrols");
-    pGraphics->AttachControl(new IVXYPadControl(nextCell(), {kParamFreq1, kParamFreq2}, "IVXYPadControl", style), kNoTag, "vcontrols");
+    pGraphics->AttachControl(new IShaderControl(nextCell(), R"(
+        uniform float iTime;
+        
+        half4 main(float2 fragCoord) {
+          return half4(mix(float3(0,0,1), float3(1,0,0), sin(iTime)), 1);
+        }
+        )"
+    ));
+      
+    pGraphics->AttachControl(new IVXYPadControl(sameCell(), {kParamFreq1, kParamFreq2}, "IVXYPadControl", style), kNoTag, "vcontrols");
+      
     pGraphics->AttachControl(new IVMultiSliderControl<6>(nextCell(), "IVMultiSliderControl", style), kNoTag, "vcontrols");
     // pGraphics->AttachControl(new IVMeterControl<2>(nextCell(), "IVMeterControl - Lin", style.WithColor(kFG, COLOR_WHITE.WithOpacity(0.3f)), EDirection::Vertical, {"L", "R"}), kCtrlTagMeter, "vcontrols");
     // pGraphics->AttachControl(new IVPeakAvgMeterControl<2>(nextCell(), "IVPeakAvgMeterControl - Log", style.WithColor(kFG, COLOR_WHITE.WithOpacity(0.3f))), kCtrlTagPeakAvgMeter, "vcontrols");
